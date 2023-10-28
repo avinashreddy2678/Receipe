@@ -6,11 +6,11 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useNavigate } from "react-router-dom";
 const Card = ({ item, liked, saved }) => {
-  const [like, setlike] = useState();
-  const [save, setsave] = useState();
+  const [like, setlike] = useState("");
+  const [save, setsave] = useState("");
   const [likecount, setlikecount] = useState();
   const userid = window.localStorage.getItem("userid");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     setlikecount(item.Liked.length);
   }, [item.Liked]);
@@ -22,7 +22,7 @@ const Card = ({ item, liked, saved }) => {
   }, [saved]);
   //for clikcing the name and getting receipe of htat particular user
   const handlenameclick = (_id) => {
-    console.log(_id);
+    navigate(`/allreceipes/${_id}`);
   };
 
   // if no image is provided it will take default imate
@@ -35,7 +35,7 @@ const Card = ({ item, liked, saved }) => {
     if (userid) {
       setlike(false);
       setlikecount((pre) => pre + 1);
-      const response = await axios.put("http://localhost:4001/like", {
+      await axios.put("http://localhost:4001/like", {
         userid,
         _id,
       });
@@ -64,7 +64,7 @@ const Card = ({ item, liked, saved }) => {
   const handlesave = async (_id) => {
     if (userid) {
       setsave(false);
-      const response = await axios.put("http://localhost:4001/saved", {
+      await axios.put("http://localhost:4001/saved", {
         userid,
         _id,
       });
@@ -77,7 +77,7 @@ const Card = ({ item, liked, saved }) => {
   const handleremovesave = async (_id) => {
     if (userid) {
       setsave(true);
-      const response = await axios.delete("http://localhost:4001/saved", {
+      await axios.delete("http://localhost:4001/saved", {
         params: {
           userid,
           _id,
@@ -87,51 +87,69 @@ const Card = ({ item, liked, saved }) => {
       alert("login to save");
     }
   };
-  const handleinfopage=(id)=>{
-      navigate(`/receipe/${id}`)
-  }
+  const handleinfopage = (id) => {
+    navigate(`/receipe/${id}`);
+  };
+
   return (
     <div className="Cardbox shadow-lg rounded-3 bg-light mt-5 mx-2">
-      <img className="shadow-sm rounded-3" src={img} alt="" onClick={()=>handleinfopage(item._id)}/>
-      <div className="d-flex align-items-center justify-content-between">
-        <div className="name px-5 py-2">
+      <img
+        className="shadow-sm rounded-3"
+        src={img}
+        alt=""
+        onClick={() => handleinfopage(item._id)}
+      />
+      <div className="d-flex px-3 align-middle justify-content-between">
+        <div className="name d-flex align-items-center px-4 py-1">
           <h2>{item.name}</h2>
         </div>
 
-        <div className="like mx-2 mt-3">
+        <div className="like d-flex mx-2 mt-3">
           <>
-            {like ? (
-              <FavoriteBorderIcon
-                className="border-0 bg-transparent"
-                onClick={() => handlelike(item._id)}
-                style={{ fontSize: 32, cursor: "pointer" }}
-              />
+            {like === true || like === false ? (
+              <>
+                {like ? (
+                <FavoriteBorderIcon
+                  className="border-0 bg-transparent"
+                  onClick={() => handlelike(item._id)}
+                  style={{ fontSize: 32, cursor: "pointer" }}
+                />
+                ) : (
+                <FavoriteIcon
+                  className="border-0 bg-transparent"
+                  onClick={() => handleremovelike(item._id)}
+                  style={{ fontSize: 32, cursor: "pointer" }}
+                />
+                )} {likecount}
+              </>
             ) : (
-              <FavoriteIcon
-                className="border-0 bg-transparent"
-                onClick={() => handleremovelike(item._id)}
-                style={{ fontSize: 32, cursor: "pointer" }}
-              />
+              ""
             )}
-            {likecount}
           </>
+          <div className="px-2">
+          {save === true || save === false ? (
+              <>
+                {save ? (
+                  <BookmarkBorderIcon
+                    className="border-0 bg-transparent"
+                    onClick={() => handlesave(item._id)}
+                    style={{ fontSize: 32, cursor: "pointer" }}
+                  />
+                ) : (
+                  <BookmarkIcon
+                    className="border-0 bg-transparent"
+                    onClick={() => handleremovesave(item._id)}
+                    style={{ fontSize: 32, cursor: "pointer" }}
+                  />
+                )}
+              </>
+            ) : (
+              " "
+            )}
+          </div>
         </div>
         <div className="save mx-1 mt-3">
-          <>
-            {save ? (
-              <BookmarkBorderIcon
-                className="border-0 bg-transparent"
-                onClick={() => handlesave(item._id)}
-                style={{ fontSize: 32, cursor: "pointer" }}
-              />
-            ) : (
-              <BookmarkIcon
-                className="border-0 bg-transparent"
-                onClick={() => handleremovesave(item._id)}
-                style={{ fontSize: 32, cursor: "pointer" }}
-              />
-            )}
-          </>
+          
         </div>
       </div>
 

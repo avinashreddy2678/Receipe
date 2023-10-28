@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Navbar from "../Components/Navbar";
+import Sidebar from "../Components/Sidebar";
 const CreateRecepie = () => {
   const [recipe, setreceipe] = useState({
     name: "",
@@ -69,6 +70,7 @@ const CreateRecepie = () => {
   return (
     <div className="CreatePage">
       <Navbar />
+      <Sidebar/>
       <button
         onClick={() => {
           handleclick();

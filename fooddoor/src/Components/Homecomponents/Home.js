@@ -3,8 +3,9 @@ import axios from "axios";
 import Navbar from "../Navbar";
 import Card from "./Card";
 import Sidebar from "../Sidebar";
-import { InfinitySpin } from  'react-loader-spinner'
-
+import { InfinitySpin } from "react-loader-spinner";
+import { useDispatch } from "react-redux";
+import { fetchdata } from "../../Store/CardSlice";
 
 function Home() {
   const [data, setdata] = useState([]);
@@ -12,10 +13,15 @@ function Home() {
   const [caterogry, setcategory] = useState("");
   const [Likes, setLikes] = useState("");
   const [searchword, setsearchword] = useState("");
-  const [loading,setloading]=useState(true);
+  const [loading, setloading] = useState(true);
   const userid = window.localStorage.getItem("userid");
   const name = window.localStorage.getItem("name");
   const mode = JSON.parse(localStorage.getItem("toggler"));
+  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchdata());
+  }, [dispatch]);
   //fetching all the data
   useEffect(() => {
     try {
@@ -63,12 +69,12 @@ function Home() {
     setLikes("");
     setcategory("");
   };
- useEffect(()=>{
-  const filterindividual=data.filter((individual)=>{
-    return individual.name.toLowerCase().includes(searchword.toLowerCase())
-  })
-  setfilterdata(filterindividual);
- },[searchword])
+  useEffect(() => {
+    const filterindividual = data.filter((individual) => {
+      return individual.name.toLowerCase().includes(searchword.toLowerCase());
+    });
+    setfilterdata(filterindividual);
+  }, [searchword]);
   return (
     <div className="home">
       <div className="banner z-index-2">
@@ -90,7 +96,7 @@ function Home() {
       <Navbar />
 
       <div className={`${!mode ? "homediv" : "darkModeAllcards"} d-flex`}>
-        <Sidebar />
+        <Sidebar home={true} back={true}/>
         <div className="title-box my-4">
           <div className="SecondpageTitle">
             <h1>Title</h1>
@@ -104,7 +110,6 @@ function Home() {
               className="mx-3"
               onChange={(e) => setsearchword(e.target.value)}
             />
-           
           </div>
 
           {/* filters buttons */}
@@ -130,11 +135,11 @@ function Home() {
                 <option value="nonveg">Non-Vegetarian</option>
               </select>
             </div>
-            <div className="filterbuttons">
+            <div className="filterbutton">
               <button
                 type="submit"
                 className="btn btn-primary rounded-pill  mx-2 py-1 px-3"
-                onClick={(e)=>handlefilters(e)}
+                onClick={(e) => handlefilters(e)}
               >
                 Apply Filter
               </button>
@@ -153,26 +158,24 @@ function Home() {
         </div>
 
         <div className={`${"Allcards"} my-3`}>
-
-            {
-              loading ? (<InfinitySpin 
-                width='200'
-                color="#4fa94d"
-              />):(filterdata.length >0 ?  filterdata.map((item) => {
-                const isLiked = item.Liked.includes(userid);
-                const isSaved = item.Saved.includes(userid);
-                return (
-                  <Card
-                    key={item.id}
-                    item={item}
-                    liked={!isLiked}
-                    saved={!isSaved}
-                  />
-                );
-              }):(<h1>No Items</h1>))
-            }
-
-          
+          {loading ? (
+            <InfinitySpin width="200" color="#4fa94d" />
+          ) : filterdata.length > 0 ? (
+            filterdata.map((item) => {
+              const isLiked = item.Liked.includes(userid);
+              const isSaved = item.Saved.includes(userid);
+              return (
+                <Card
+                  key={item.id}
+                  item={item}
+                  liked={!isLiked}
+                   saved={!isSaved}
+                />
+              );
+            })
+          ) : (
+            <h1>No Items</h1>
+          )}
         </div>
       </div>
     </div>

@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import Sidebar from "../Components/Sidebar";
 
 const Receipedetails = () => {
+  
   const { id } = useParams();
   const [data, setdata] = useState([]);
   const [cookies] = useCookies(["access_token"]);
@@ -26,6 +28,7 @@ const Receipedetails = () => {
   return (
     <div>
       <Navbar />
+      <Sidebar/>
       <div className="ReceipeBanner w-75 d-flex flex-col  border border-red-300">
         <div className="left">
           <div>
