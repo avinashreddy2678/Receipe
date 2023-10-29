@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { baseurl } from "../helper";
 
 // initla state using asyncthunk
 const userid = window.localStorage.getItem("userid");
 export const fetchdata = createAsyncThunk("fetchdata", async () => {
   try {
-    const response = await axios.get(`http://localhost:4001/${userid}`);
+    const response = await axios.get(`${baseurl}/${userid}`);
     if (response) {
       const serializablePayload = {
         data: response.data,

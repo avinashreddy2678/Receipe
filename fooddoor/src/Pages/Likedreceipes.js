@@ -20,13 +20,15 @@ const Likedreceipes = () => {
   }, [dispatch]);
   const selector = useSelector((state) => state.Card);
   useEffect(() => {
-    if (selector.data.data !== undefined) setdata(selector.data.data.Liked);
-    setloading(false);
+    if (selector.data.data !== null){
+     setdata(selector.data.data.Liked);
+   
+    } setloading(false);
   }, [selector]);
 
   return (
     <div>
-      <Navbar />
+      <Navbar />  
       <Sidebar />
       <div className="page d-flex flex-col justify-center mt-5">
         <h1>
@@ -34,7 +36,7 @@ const Likedreceipes = () => {
         </h1>
         {loading ? (
           <InfinitySpin width="200" color="#4fa94d" />
-        ) : data.length > 0 ? (
+        ) : data[0]!==undefined && data.length > 0 ? (
           <div className="d-flex flex-wrap">
             {data.map((item) => {
               const isLiked = item.Liked.includes(userid);

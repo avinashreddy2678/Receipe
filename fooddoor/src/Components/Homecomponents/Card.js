@@ -5,6 +5,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../helper";
 const Card = ({ item, liked, saved }) => {
   const [like, setlike] = useState("");
   const [save, setsave] = useState("");
@@ -35,7 +36,7 @@ const Card = ({ item, liked, saved }) => {
     if (userid) {
       setlike(false);
       setlikecount((pre) => pre + 1);
-      await axios.put("http://localhost:4001/like", {
+      await axios.put(`${baseurl}/like`, {
         userid,
         _id,
       });
@@ -49,7 +50,7 @@ const Card = ({ item, liked, saved }) => {
     if (userid) {
       setlikecount((pre) => pre - 1);
       setlike(true);
-      const response = await axios.delete("http://localhost:4001/like", {
+      const response = await axios.delete(`${baseurl}/like`, {
         params: {
           userid,
           _id,
@@ -64,7 +65,7 @@ const Card = ({ item, liked, saved }) => {
   const handlesave = async (_id) => {
     if (userid) {
       setsave(false);
-      await axios.put("http://localhost:4001/saved", {
+      await axios.put(`${baseurl}/saved`, {
         userid,
         _id,
       });
@@ -77,7 +78,7 @@ const Card = ({ item, liked, saved }) => {
   const handleremovesave = async (_id) => {
     if (userid) {
       setsave(true);
-      await axios.delete("http://localhost:4001/saved", {
+      await axios.delete(`${baseurl}/saved`, {
         params: {
           userid,
           _id,
@@ -99,6 +100,11 @@ const Card = ({ item, liked, saved }) => {
         alt=""
         onClick={() => handleinfopage(item._id)}
       />
+
+
+
+
+
       <div className="d-flex px-3 align-middle justify-content-between">
         <div className="name d-flex align-items-center px-4 py-1">
           <h2>{item.name}</h2>
@@ -152,6 +158,12 @@ const Card = ({ item, liked, saved }) => {
           
         </div>
       </div>
+
+
+
+
+
+      
 
       <div className="username d-flex justify-content-end px-3">
         <p

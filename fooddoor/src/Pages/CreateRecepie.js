@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
+import { baseurl } from "../helper";
 const CreateRecepie = () => {
   const [recipe, setreceipe] = useState({
     name: "",
@@ -20,7 +21,7 @@ const CreateRecepie = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(
-      `http://localhost:4001/create/${userid}`,
+      `${baseurl}/create/${userid}`,
       {
         name: recipe.name,
         type: recipe.type,

@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../Components/Navbar";
+import { InfinitySpin } from "react-loader-spinner";
 import Sidebar from "../Components/Sidebar";
+import { baseurl } from "../helper";
 
 const Receipedetails = () => {
-  
+  const [loading,setloading]=useState(true);
   const { id } = useParams();
   const [data, setdata] = useState([]);
   const [cookies] = useCookies(["access_token"]);
   const navigate=useNavigate();
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await axios.get(`http://localhost:4001/receipe/${id}`, {
-        headers: {
-          authorization: cookies.access_token,
-        },
+      const response = await axios.get(`${baseurl}/receipe/${id}`, {
+       
       });
       setdata(response.data.response);
+      setloading(false)
     };
     fetchdata();
   }, []);
@@ -29,19 +30,22 @@ const Receipedetails = () => {
     <div>
       <Navbar />
       <Sidebar/>
-      <div className="ReceipeBanner w-75 d-flex flex-col  border border-red-300">
+      {
+        loading ? <div className=" spin d-flex align-middle justify-center"><InfinitySpin/></div> :
+      
+      <div className="ReceipeBanner shadow-md border border-red-300">
         <div className="left">
           <div>
             <img src={data.imgurl} alt="" />
           </div>
-          <div className="details d-flex w-100 justify-center">
-            <h1>{data.name}</h1>
-            <h6>{data.time} min</h6>
-            <h6>{data.type}</h6>
+          <div className="details d-flex align-middle justify-between">
+            <h1 className="mt-3">{data.name}</h1>
+            <h6 className="mt-4">{data.time} min</h6>
+            <h6 className="mt-4">{data.type}</h6>
           </div>
-          <div className="ingrediants">
+          <div className="ingrediants mt-2">
             <p>
-              <h4>Ingrediants = &#123;</h4>
+              <h5>Ingrediants = &#123;</h5>
               <ul className="d-flex">
                 {data.ingrediants !== undefined
                   ? data.ingrediants.length > 0
@@ -59,12 +63,13 @@ const Receipedetails = () => {
         </div>
         <div className="right flex-wrap">
           <h2>Description:</h2>
-          <p className="text-lg"> {data.description}</p>
+          <p className="text-lg pt-3 max-w-screen-sm"> {data.description}</p>
           <h4 onClick={() => handlecreatorname(data.creatorid)}>
             -{data.creatorname}
           </h4>
         </div>
       </div>
+      }
     </div>
   );
 };

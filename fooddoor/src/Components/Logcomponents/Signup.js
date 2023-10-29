@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../helper";
 
 function Signup() {
   const [name, setname] = useState("");
@@ -14,7 +15,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:4001/user/signup", {
+      const response = await axios.post(`${baseurl}/user/signup`, {
         username: name,
         email: email,
         password: password,
@@ -37,7 +38,7 @@ function Signup() {
           className="rounded-4 col-md-6 col-lg-4 h-75 col-8 py-4 m-auto bg-white"
           onSubmit={handlesubmit}
         >
-          <div className="title">
+          <div className="titles">
             <h1 className="d-flex justify-content-center align-items-center my-5">
               Welcome
             </h1>

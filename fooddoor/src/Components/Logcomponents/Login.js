@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { baseurl } from "../../helper";
 function Login() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -13,7 +14,7 @@ function Login() {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4001/user/login", {
+      const response = await axios.post(`${baseurl}/user/login`, {
         email: email,
         password: password,
       });

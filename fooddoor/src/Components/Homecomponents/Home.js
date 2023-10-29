@@ -6,6 +6,7 @@ import Sidebar from "../Sidebar";
 import { InfinitySpin } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { fetchdata } from "../../Store/CardSlice";
+import { baseurl } from "../../helper";
 
 function Home() {
   const [data, setdata] = useState([]);
@@ -16,7 +17,7 @@ function Home() {
   const [loading, setloading] = useState(true);
   const userid = window.localStorage.getItem("userid");
   const name = window.localStorage.getItem("name");
-  const mode = JSON.parse(localStorage.getItem("toggler"));
+  // const mode = JSON.parse(localStorage.getItem("toggler"));
   
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,7 +27,7 @@ function Home() {
   useEffect(() => {
     try {
       const fetchdata = async () => {
-        const response = await axios.get("http://localhost:4001");
+        const response = await axios.get(`${baseurl}`);
         if (response) {
           setloading(false);
           setdata(response.data.response);
@@ -95,11 +96,13 @@ function Home() {
       </div>
       <Navbar />
 
-      <div className={`${!mode ? "homediv" : "darkModeAllcards"} d-flex`}>
+
+
+      <div className={`homediv d-flex`}>
         <Sidebar home={true} back={true}/>
         <div className="title-box my-4">
           <div className="SecondpageTitle">
-            <h1>Title</h1>
+            <h1>Receipe'S</h1>
           </div>
 
           {/* search box */}
@@ -114,20 +117,22 @@ function Home() {
 
           {/* filters buttons */}
           <div className="filterbuttons d-flex">
-            <div className="filters">
+            <div>
               <select
                 name="likes"
-                className="border-1 rounded-pill bg-transparent py-1 px-3 mx-2"
+                className="border-0 rounded-pill font-bold bg-transparent py-1 px-3 mx-2"
                 id="likes"
                 onChange={(e) => setLikes(e.target.value)}
               >
+                
                 <option value="less">Least-Liked</option>
                 <option value="more">Most-Liked</option>
+                
               </select>
 
               <select
                 name="food-type"
-                className="border-1 rounded-pill bg-transparent py-1 px-3 "
+                className="border-0 rounded-pill font-bold bg-transparent py-1 px-3 "
                 id="food-type"
                 onChange={(e) => setcategory(e.target.value)}
               >
@@ -157,6 +162,11 @@ function Home() {
           </div>
         </div>
 
+
+
+
+
+
         <div className={`${"Allcards"} my-3`}>
           {loading ? (
             <InfinitySpin width="200" color="#4fa94d" />
@@ -178,6 +188,15 @@ function Home() {
           )}
         </div>
       </div>
+
+
+
+
+
+
+
+
+      
     </div>
   );
 }

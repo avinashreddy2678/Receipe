@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Navbar from "../Components/Navbar";
 import { InfinitySpin } from "react-loader-spinner";
-import MediaCard from "../Components/Homecomponents/MCard";
+import Card from "../Components/Homecomponents/Card";
 import Sidebar from "../Components/Sidebar";
+import { baseurl } from "../helper";
 const Myreceipes = () => {
   const [data, setdata] = useState([]);
   const [cookies] = useCookies(["access_token"]);
@@ -14,14 +15,14 @@ const Myreceipes = () => {
     try {
       const fetchdata = async () => {
         const response = await axios.get(
-          `http://localhost:4001/myrecepies/${userid}`,
+          `${baseurl}/myrecepies/${userid}`,
           {
             headers: {
               authorization: cookies.access_token,
             },
           }
         );
-        console.log(response)
+        
         if (response) {
           setdata(response.data.response);
           setloading(false);
@@ -46,7 +47,7 @@ const Myreceipes = () => {
           <div className="d-flex flex-wrap">
             {data.map((item) => (
               <div key={item.id}>
-                <MediaCard item={item} />
+                <Card item={item} />
               </div>
             ))}
           </div>

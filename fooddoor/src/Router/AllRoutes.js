@@ -10,8 +10,6 @@ import Likedreceipes from "../Pages/Likedreceipes";
 import Myreceipes from "../Pages/Myreceipes";
 import Receipedetails from "../Pages/Receipedetails";
 import AllReceipesofCreator from "../Pages/AllReceipesofCreator";
-import { useSelector,useDispatch } from "react-redux";
-import { fetchdata } from "../Store/CardSlice";
 
 function AllRoutes() {
   
